@@ -10,12 +10,16 @@ import com.liang.OJbackend.common.ResultUtils;
 import com.liang.OJbackend.constant.UserConstant;
 import com.liang.OJbackend.exception.BusinessException;
 import com.liang.OJbackend.exception.ThrowUtils;
+import com.liang.OJbackend.model.dto.QuestionSubmit.QuestionSubmitAddRequest;
+import com.liang.OJbackend.model.dto.QuestionSubmit.QuestionSubmitQueryRequest;
 import com.liang.OJbackend.model.dto.question.*;
 import com.liang.OJbackend.model.entity.Question;
 import com.liang.OJbackend.model.entity.QuestionSubmit;
 import com.liang.OJbackend.model.entity.User;
+import com.liang.OJbackend.model.vo.QuestionSubmitVO;
 import com.liang.OJbackend.model.vo.QuestionVO;
 import com.liang.OJbackend.service.QuestionService;
+import com.liang.OJbackend.service.QuestionSubmitService;
 import com.liang.OJbackend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -36,8 +40,10 @@ public class QuestionController {
     @Resource
     private UserService userService;
 
+
+
     @Resource
-    private QuestionSubmitController questionSubmitController;
+    private QuestionSubmitService questionSubmitService;
 
 
     private static final Gson GSON = new Gson();
@@ -45,6 +51,7 @@ public class QuestionController {
 
 
 
+    @PostMapping("/add")
     public BaseResponse<Long> addQuestion(@RequestBody QuestionAddRequest questionAddRequest, HttpServletRequest request){
         if (questionAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -66,6 +73,7 @@ public class QuestionController {
         return ResultUtils.success(question.getId());
     }
 
+    @PostMapping("/delete")
     public BaseResponse<Boolean> deleteQuestion(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request){
 
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
@@ -120,10 +128,8 @@ public class QuestionController {
         return ResultUtils.success(question);
     }
 
-
-
     @GetMapping("/get/vo")
-    public BaseResponse<Question> getQuestionVOById(long id, HttpServletRequest request){
+    public BaseResponse<QuestionVO> getQuestionVOById(long id, HttpServletRequest request){
         if (id <= 0){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -236,37 +242,37 @@ public class QuestionController {
      * @param request
      * @return 提交记录的 id
      */
-    @PostMapping("/question_submit/do")
-    public BaseResponse<Long> doQuestionSubmit(@RequestBody QuestionSubmitAddRequest questionSubmitAddRequest,
-                                               HttpServletRequest request) {
-        if (questionSubmitAddRequest == null || questionSubmitAddRequest.getQuestionId() <= 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        // 登录才能点赞
-        final User loginUser = userService.getLoginUser(request);
-        long questionSubmitId = questionSubmitService.doQuestionSubmit(questionSubmitAddRequest, loginUser);
-        return ResultUtils.success(questionSubmitId);
-    }
-
-    /**
-     * 分页获取题目提交列表（除了管理员外，普通用户只能看到非答案、提交代码等公开信息）
-     *
-     * @param questionSubmitQueryRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/question_submit/list/page")
-    public BaseResponse<Page<QuestionSubmitVO>> listQuestionSubmitByPage(@RequestBody QuestionSubmitQueryRequest questionSubmitQueryRequest,
-                                                                         HttpServletRequest request) {
-        long current = questionSubmitQueryRequest.getCurrent();
-        long size = questionSubmitQueryRequest.getPageSize();
-        // 从数据库中查询原始的题目提交分页信息
-        Page<QuestionSubmit> questionSubmitPage = questionSubmitService.page(new Page<>(current, size),
-                questionSubmitService.getQueryWrapper(questionSubmitQueryRequest));
-        final User loginUser = userService.getLoginUser(request);
-        // 返回脱敏信息
-        return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(questionSubmitPage, loginUser));
-    }
+//    @PostMapping("/question_submit/do")
+//    public BaseResponse<Long> doQuestionSubmit(@RequestBody QuestionSubmitAddRequest questionSubmitAddRequest,
+//                                               HttpServletRequest request) {
+//        if (questionSubmitAddRequest == null || questionSubmitAddRequest.getQuestionId() <= 0) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        // 登录才能点赞
+//        final User loginUser = userService.getLoginUser(request);
+//        long questionSubmitId = questionSubmitService.doQuestionSubmit(questionSubmitAddRequest, loginUser);
+//        return ResultUtils.success(questionSubmitId);
+//    }
+//
+//    /**
+//     * 分页获取题目提交列表（除了管理员外，普通用户只能看到非答案、提交代码等公开信息）
+//     *
+//     * @param questionSubmitQueryRequest
+//     * @param request
+//     * @return
+//     */
+//    @PostMapping("/question_submit/list/page")
+//    public BaseResponse<Page<QuestionSubmitVO>> listQuestionSubmitByPage(@RequestBody QuestionSubmitQueryRequest questionSubmitQueryRequest,
+//                                                                         HttpServletRequest request) {
+//        long current = questionSubmitQueryRequest.getCurrent();
+//        long size = questionSubmitQueryRequest.getPageSize();
+//        // 从数据库中查询原始的题目提交分页信息
+//        Page<QuestionSubmit> questionSubmitPage = questionSubmitService.page(new Page<>(current, size),
+//                questionSubmitService.getQueryWrapper(questionSubmitQueryRequest));
+//        final User loginUser = userService.getLoginUser(request);
+//        // 返回脱敏信息
+//        return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(questionSubmitPage, loginUser));
+//    }
 
 
 

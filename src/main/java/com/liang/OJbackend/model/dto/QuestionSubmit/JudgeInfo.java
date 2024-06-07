@@ -1,6 +1,11 @@
 package com.liang.OJbackend.model.dto.QuestionSubmit;
 
-public class JudgeInfo {
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class JudgeInfo implements Serializable {
 
     /**
      * 程序执行信息
@@ -16,5 +21,6 @@ public class JudgeInfo {
      * 消耗内存
      */
     private Long memory;
+    private static final long serialVersionUID = 1L;
 
 }

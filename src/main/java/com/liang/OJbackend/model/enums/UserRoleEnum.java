@@ -1,5 +1,6 @@
 package com.liang.OJbackend.model.enums;
 
+import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
  *
   
  */
+@Getter
 public enum UserRoleEnum {
 
     USER("用户", "user"),
@@ -55,11 +57,4 @@ public enum UserRoleEnum {
 
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public String getText() {
-        return text;
-    }
 }

@@ -1,5 +1,6 @@
 package com.liang.OJbackend.model.enums;
 
+import lombok.Getter;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.Arrays;
@@ -11,9 +12,8 @@ import java.util.stream.Collectors;
  *
   
  */
-public enum
-
-FileUploadBizEnum {
+@Getter
+public enum FileUploadBizEnum {
 
     USER_AVATAR("用户头像", "user_avatar");
 
@@ -53,11 +53,4 @@ FileUploadBizEnum {
         return null;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public String getText() {
-        return text;
-    }
 }

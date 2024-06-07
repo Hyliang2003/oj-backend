@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.liang.OJbackend.model.dto.question.JudgeCase;
 import lombok.Data;
 
 /**
@@ -52,12 +55,12 @@ public class Question implements Serializable {
     /**
      * 判题用例(Json对象)
      */
-    private Integer judgeCase;
+    private String judgeCase;
 
     /**
      * 判题配置(Json对象)
      */
-    private Integer judgeConfig;
+    private String judgeConfig;
 
     /**
      * 点赞数

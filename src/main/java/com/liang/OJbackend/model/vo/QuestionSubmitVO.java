@@ -3,15 +3,13 @@ package com.liang.OJbackend.model.vo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.liang.OJbackend.model.dto.question.JudgeConfig;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Data
-public class QuestionVO implements Serializable {
+public class QuestionSubmitVO implements Serializable {
     /**
      * id
      */
@@ -19,45 +17,26 @@ public class QuestionVO implements Serializable {
     private Long id;
 
     /**
-     * 标题
+     * 编程语言
      */
-    private String title;
+    private String language;
 
     /**
-     * 内容
+     * 代码
      */
-    private String content;
+    private String code;
 
     /**
-     * 标签列表（json 数组）
+     * 判题信息
      */
-    private List<String> tags;
+    private String judgeInfo;
 
-
-    /**
-     * 提交数
-     */
-    private Integer subNum;
+    private Integer status;
 
     /**
-     * 通过数
+     * 题目 id
      */
-    private Integer passNum;
-
-    /**
-     * 判题配置(Json对象)
-     */
-    private List<JudgeConfig> judgeConfig;
-
-    /**
-     * 点赞数
-     */
-    private Integer thumbNum;
-
-    /**
-     * 收藏数
-     */
-    private Integer favourNum;
+    private Long questionId;
 
     /**
      * 创建用户 id
@@ -74,15 +53,10 @@ public class QuestionVO implements Serializable {
      */
     private Date updateTime;
 
-    /**
-     * 是否删除
-     */
-    private Integer isDelete;
-
     private UserVO userVO;
+
+    private QuestionVO questionVO;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-
 }
