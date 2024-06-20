@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.liang.OJbackend.common.PageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class QuestionQueryRequest  extends PageRequest implements Serializable {
     /**
@@ -38,16 +40,6 @@ public class QuestionQueryRequest  extends PageRequest implements Serializable {
      */
     private String answer;
 
-
-    /**
-     * 判题用例(Json对象)
-     */
-    private List<JudgeCase> judgeCase;
-
-    /**
-     * 判题配置(Json对象)
-     */
-    private List<JudgeConfig> judgeConfig;
 
     /**
      * 创建用户 id

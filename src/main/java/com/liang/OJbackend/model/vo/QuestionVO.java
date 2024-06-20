@@ -1,21 +1,26 @@
 package com.liang.OJbackend.model.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import cn.hutool.json.JSONUtil;
+
+
 import com.liang.OJbackend.model.dto.question.JudgeConfig;
+import com.liang.OJbackend.model.entity.Question;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 题目封装类
+ * @TableName question
+ */
 @Data
 public class QuestionVO implements Serializable {
     /**
      * id
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -29,35 +34,35 @@ public class QuestionVO implements Serializable {
     private String content;
 
     /**
-     * 标签列表（json 数组）
+     * 标签列表
      */
     private List<String> tags;
 
+    /**
+     * 题目提交数
+     */
+
+    private int submitNum;
 
     /**
-     * 提交数
+     * 题目通过数
      */
-    private Integer subNum;
+    private int acceptedNum;
 
     /**
-     * 通过数
+     * 判题配置（json 对象）
      */
-    private Integer passNum;
-
-    /**
-     * 判题配置(Json对象)
-     */
-    private List<JudgeConfig> judgeConfig;
+    private JudgeConfig judgeConfig;
 
     /**
      * 点赞数
      */
-    private Integer thumbNum;
+    private int thumbNum;
 
     /**
      * 收藏数
      */
-    private Integer favourNum;
+    private int favourNum;
 
     /**
      * 创建用户 id
@@ -75,14 +80,50 @@ public class QuestionVO implements Serializable {
     private Date updateTime;
 
     /**
-     * 是否删除
+     * 创建题目人的信息
      */
-    private Integer isDelete;
-
     private UserVO userVO;
 
-    @TableField(exist = false)
+    /**
+     * 包装类转对象
+     *
+     * @param questionVO
+     * @return
+     */
+    public static Question voToObj(QuestionVO questionVO) {
+        if (questionVO == null) {
+            return null;
+        }
+        Question question = new Question();
+        BeanUtils.copyProperties(questionVO, question);
+        List<String> tagList = questionVO.getTags();
+        if (tagList != null) {
+            question.setTags(JSONUtil.toJsonStr(tagList));
+        }
+        JudgeConfig voJudgeConfig = questionVO.getJudgeConfig();
+        if (voJudgeConfig != null) {
+            question.setJudgeConfig(JSONUtil.toJsonStr(voJudgeConfig));
+        }
+        return question;
+    }
+
+    /**
+     * 对象转包装类
+     *
+     * @param question
+     * @return
+     */
+    public static QuestionVO objToVo(Question question) {
+        if (question == null) {
+            return null;
+        }
+        QuestionVO questionVO = new QuestionVO();
+        BeanUtils.copyProperties(question, questionVO);
+        List<String> tagList = JSONUtil.toList(question.getTags(), String.class);
+        questionVO.setTags(tagList);
+        String judgeConfigStr = question.getJudgeConfig();
+        questionVO.setJudgeConfig(JSONUtil.toBean(judgeConfigStr, JudgeConfig.class));
+        return questionVO;
+    }
     private static final long serialVersionUID = 1L;
-
-
 }

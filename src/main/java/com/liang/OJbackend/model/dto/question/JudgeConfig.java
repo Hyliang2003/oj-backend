@@ -2,8 +2,10 @@ package com.liang.OJbackend.model.dto.question;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class JudgeConfig {
+public class JudgeConfig implements Serializable {
 
     /**
      * 时间限制

@@ -25,7 +25,6 @@ public enum FileUploadBizEnum {
         this.text = text;
         this.value = value;
     }
-
     /**
      * 获取值列表
      *
